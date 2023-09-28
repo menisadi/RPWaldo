@@ -7,11 +7,14 @@ let gameStarted = false;
 function placeWaldo() {
     const waldo = document.getElementById('waldo');
     const container = document.querySelector('.game-container');
-    const maxX = container.clientWidth - waldo.clientWidth;
-    const maxY = container.clientHeight - waldo.clientHeight;
+    const maxX = container.offsetWidth - waldo.offsetWidth;
+    const maxY = container.offsetHeight - waldo.offsetHeight;
 
     const randomX = Math.floor(Math.random() * maxX);
     const randomY = Math.floor(Math.random() * maxY);
+
+    console.log(randomX)
+    console.log(randomY)
 
     waldo.style.left = randomX + 'px';
     waldo.style.top = randomY + 'px';
@@ -23,14 +26,17 @@ function updateScore() {
     counter.textContent = `Score: ${score}`;
 }
 
-// Event listener for the Start button
 const startButton = document.getElementById('start-button');
 startButton.addEventListener('click', () => {
     if (!gameStarted) {
-        score = 0;
-        updateScore();
         gameStarted = true;
+
+        // Show Waldo when the game starts
+        const waldo = document.getElementById('waldo');
+        waldo.style.display = 'block';
     }
+    score = 0;
+    updateScore();
     placeWaldo();
 });
 
