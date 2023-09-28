@@ -1,0 +1,43 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* height: 100vh; */
+    margin: 0;
+}
+
+#title {
+    font-size: 32px;
+    font-weight: bold;
+    margin: 10px auto;
+}
+
+.game-container {
+    text-align: center;
+}
+
+#start-button {
+    font-size: 18px;
+    padding: 10px 20px;
+    margin: 10px;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}
+
+#counter {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 10px;
+    position: absolute;
+    top: 60px;
+    left: 10px;
+}
+
+#waldo {
+    width: 50px;
+    height: 50px;
+    background-image: url('images/waldo.png'); 
+    background-size: cover;
+    position: absolute;
+}
