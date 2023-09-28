@@ -13,9 +13,6 @@ function placeWaldo() {
     const randomX = Math.floor(Math.random() * maxX);
     const randomY = Math.floor(Math.random() * maxY);
 
-    console.log(randomX)
-    console.log(randomY)
-
     waldo.style.left = randomX + 'px';
     waldo.style.top = randomY + 'px';
 }
