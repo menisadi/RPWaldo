@@ -42,6 +42,16 @@ body {
     left: 10px;
 }
 
+#stop-button {
+    font-family: 'Nunito', sans-serif;
+    font-size: 18px;
+    padding: 10px 20px;
+    margin: 10px;
+    position: absolute;
+    top: 80px;
+    left: 10px;
+}
+
 #counter {
     font-family: 'Nunito', sans-serif;
     font-size: 24px;
@@ -50,6 +60,11 @@ body {
     position: absolute;
     top: 10px;
     right: 10px;
+    color: #ffffff;
+    background-color: #333333;
+    padding: 5px 10px;
+    border-radius: 5px;
+
 }
 
 #waldo {
@@ -59,4 +74,16 @@ body {
     background-size: cover;
     position: absolute;
     display: none; 
+}
+
+#stopwatch {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    font-size: 18px;
+    font-family: 'Nunito', sans-serif;
+    color: #ffffff;
+    background-color: #333333;
+    padding: 5px 10px;
+    border-radius: 5px;
 }
