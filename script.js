@@ -7,7 +7,18 @@ let startTime = 0;
 let totalTime = 0;
 let stopwatchInterval;
 let clickTimes = 0;
+const infoSign = document.getElementById('info-sign');
+const infoPopup = document.getElementById('info-popup');
+const closeInfoPopup = document.getElementById('close-info-popup');
 
+infoSign.addEventListener('click', () => {
+    infoPopup.style.display = 'block';
+});
+
+closeInfoPopup.addEventListener('click', () => {
+    infoPopup.style.display = 'none';
+});
+//
 // Function to place Waldo in a random location
 function placeWaldo() {
     const waldo = document.getElementById('waldo');
