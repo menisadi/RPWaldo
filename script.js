@@ -7,6 +7,8 @@ let startTime = 0;
 let totalTime = 0;
 let stopwatchInterval;
 let clickTimes = 0;
+let waldoX = 0;
+let waldoY = 0;
 const infoSign = document.getElementById('info-sign');
 const infoPopup = document.getElementById('info-popup');
 const closeInfoPopup = document.getElementById('close-info-popup');
@@ -18,6 +20,19 @@ infoSign.addEventListener('click', () => {
 closeInfoPopup.addEventListener('click', () => {
     infoPopup.style.display = 'none';
 });
+
+document.querySelector('.game-container').addEventListener('mousemove', (event) => {
+    if (gameStarted) {
+        const waldo = document.getElementById('waldo');
+        if (Math.abs(event.clientX - waldoX) < 100 && Math.abs(event.clientY - waldoY) < 100) {
+            waldo.style.opacity = 1;
+        }
+        else {
+            waldo.style.opacity = 0.25;
+        }
+    }
+});
+
 //
 // Function to place Waldo in a random location
 function placeWaldo() {
@@ -29,8 +44,12 @@ function placeWaldo() {
     const randomX = Math.floor(Math.random() * maxX);
     const randomY = Math.floor(Math.random() * maxY);
 
+    waldoX = randomX + waldo.offsetWidth * 0.5;
+    waldoY = randomY + waldo.offsetHeight * 0.5;
+
     waldo.style.left = randomX + 'px';
     waldo.style.top = randomY + 'px';
+    waldo.style.opacity = 0.25;
 }
 
 // Function to update the score
@@ -96,13 +115,13 @@ waldo.addEventListener('click', () => {
     if (gameStarted) {
         score++;
         updateScore();
-        
+
         // const currentTime = new Date().getTime();
         if (startTime > 0) {
             // const elapsedTime = currentTime - startTime;
             clickTimes++;
         }
-        
+
         // startTime = currentTime;
         updateStopwatch();
         placeWaldo();
@@ -122,7 +141,7 @@ stopButton.addEventListener('click', () => {
         counter.style.display = 'none';
         const stopwatch = document.getElementById('stopwatch');
         stopwatch.style.display = 'none';
-    
+
         // Calculate total elapsed time
         totalTime += new Date().getTime() - startTime;
 
