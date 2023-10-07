@@ -10,6 +10,19 @@ let clickTimes = 0;
 const infoSign = document.getElementById('info-sign');
 const infoPopup = document.getElementById('info-popup');
 const closeInfoPopup = document.getElementById('close-info-popup');
+const mask = document.getElementById('mask');
+const svg = document.getElementById('svg');
+
+document.addEventListener("mousemove", (event) => {
+    console.log("Mouse move");
+    var point = svg.createSVGPoint();
+    point.x = event.clientX;
+    point.y = event.clientY;
+    point = point.matrixTransform(svg.getScreenCTM().inverse());
+    mask.setAttribute('cx', point.x);
+    mask.setAttribute('cy', point.y);
+    console.log(point.x, point.y);
+});
 
 infoSign.addEventListener('click', () => {
     infoPopup.style.display = 'block';
