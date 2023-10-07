@@ -12,6 +12,15 @@ const infoPopup = document.getElementById('info-popup');
 const closeInfoPopup = document.getElementById('close-info-popup');
 const mask = document.getElementById('mask');
 const svg = document.getElementById('svg');
+const toggleSwitch = document.getElementById('toggle-switch');
+
+toggleSwitch.addEventListener('change', function() {
+  if (this.checked) {
+    svg.style.display = 'block';
+  } else {
+    svg.style.display = 'none';
+  }
+});
 
 document.addEventListener("mousemove", (event) => {
     console.log("Mouse move");

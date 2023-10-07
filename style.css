@@ -13,6 +13,7 @@ body {
     font-size: 32px;
     font-weight: bold;
     margin: 10px auto;
+    z-index: 1;
 }
 
 #subtitle {
@@ -20,6 +21,7 @@ body {
     font-size: 18px;
     color: #333; 
     margin: 10px auto;
+    z-index: 1;
 }
 
 .game-container {
@@ -97,6 +99,7 @@ body {
     cursor: pointer;
     color: blue;
     margin-left: 10px;
+    z-index: 1;
 }
 
 .info-popup {
@@ -107,7 +110,7 @@ body {
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
-    /* z-index: 1; */
+    z-index: 1;
 }
 
 .info-content {
@@ -117,6 +120,7 @@ body {
     padding: 20px;
     border-radius: 5px;
     position: relative;
+    z-index: 1;
 }
 
 .close-info-popup {
@@ -124,6 +128,7 @@ body {
     top: 10px;
     right: 10px;
     cursor: pointer;
+    z-index: 1;
 }
 
 .svg {
@@ -131,5 +136,70 @@ body {
   top: 0;
   left: 0;
   pointer-events: none;
+  display: none;
   z-index: 2;
+}
+
+* Toggle Switch Styles */
+.toggle-container {
+  display: flex;
+  align-items: center;
+  z-index: 1;
+}
+
+.toggle-label {
+    text-align: center;
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px;
+    padding: 10px 20px;
+    margin: 10px;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 55px;
+  height: 24px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 20px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px);
 }
