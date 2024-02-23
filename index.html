@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <link rel="stylesheet" href="style.css">
     <title>Where is Waldo?</title>
 </head>
+
 <body>
     <div class="game-container">
         <h1 id="title">Where's Waldo?</h1>
@@ -15,14 +17,23 @@
             <div class="info-content">
                 <span id="close-info-popup" class="close-info-popup">&times;</span>
                 <h3>What is Retinitis Pigmentosa?</h3>
-                <p>Retinitis pigmentosa (RP) is a group of inherited eye disorders that affect the retina. It causes a gradual loss of vision over time, typically starting with night blindness and tunnel vision.</p>
-                <p>This game is designed to emphasize this difficulty of RP. As oppose to people with normal vision which might find this empty version of the game quite easy, people  with RP, who have a limited field of vision, will find it much harder to find Waldo, hence the name of the game.</p>
+                <p>Retinitis pigmentosa (RP) is a group of inherited eye disorders that affect the retina. It causes a
+                    gradual loss of vision over time, typically starting with night blindness and tunnel vision.</p>
+                <p>This game is designed to emphasize this difficulty of RP. As oppose to people with normal vision
+                    which might find this empty version of the game quite easy, people with RP, who have a limited field
+                    of vision, will find it much harder to find Waldo, hence the name of the game.</p>
             </div>
         </div>
         <button id="start-button">Start</button>
         <button id="stop-button">Stop</button>
         <div id="counter">Score: 0</div>
         <div id="stopwatch">0:00</div>
+        <div id="badge">
+            <a href="https://visitorbadge.io/status?path=https%3A%2F%2Fmenisadi.github.io%2FRPWaldo%2F">
+                <img
+                    src="https://api.visitorbadge.io/api/visitors?path=https%3A%2F%2Fmenisadi.github.io%2FRPWaldo%2F&label=Players&countColor=%23ff8a65" />
+            </a>
+        </div>
         <div id="waldo"></div>
         <svg id="svg" class="svg" viewBox="0 0 3920 3080">
             <mask id="myMask">
@@ -32,9 +43,9 @@
                 <!-- Everything under a black pixel will be invisible -->
                 <circle id="mask" cx="50" cy="50" r="600" fill="black" />
             </mask>
-                
+
             <rect x="0" y="0" width="100%" height="100%" fill="white" mask="url(#myMask)" />
-        </svg>  
+        </svg>
         <div class="toggle-container">
             <div class="toggle-label">
                 <label for="toggle-switch">Toggle Tunnel Vision</label>
@@ -47,8 +58,9 @@
                 <input type="checkbox" id="toggle-switch">
                 <span class="slider"></span>
             </label>
-        </div> 
+        </div>
     </div>
     <script src="script.js"></script>
 </body>
+
 </html>

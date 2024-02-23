@@ -30,6 +30,10 @@ The game is primarily designed for desktop use, although it can also function on
 - CSS
 - JavaScript
 
+## TODO
+- [ ] Improve design
+- [ ] Add heat-map to the result
+
 ## Credits
 This game was created by [me](menisadi.github.io), inspired by the classic "Where's Waldo?" puzzle books and designed to raise awareness about Retinitis Pigmentosa and the challenges faced by individuals with limited vision.
 
