@@ -13,7 +13,10 @@ const closeInfoPopup = document.getElementById('close-info-popup');
 const mask = document.getElementById('mask');
 const svg = document.getElementById('svg');
 const toggleSwitch = document.getElementById('toggle-switch');
+const startButton = document.getElementById('start-button');
+const stopButton = document.getElementById('stop-button');
 
+// Toggle tunnel vision effect
 toggleSwitch.addEventListener('change', function() {
   if (this.checked) {
     svg.style.display = 'block';
@@ -22,17 +25,17 @@ toggleSwitch.addEventListener('change', function() {
   }
 });
 
+// Update mask position based on mouse movement
 document.addEventListener("mousemove", (event) => {
-    console.log("Mouse move");
     var point = svg.createSVGPoint();
     point.x = event.clientX;
     point.y = event.clientY;
     point = point.matrixTransform(svg.getScreenCTM().inverse());
     mask.setAttribute('cx', point.x);
     mask.setAttribute('cy', point.y);
-    console.log(point.x, point.y);
 });
 
+// Info popup handlers
 infoSign.addEventListener('click', () => {
     infoPopup.style.display = 'block';
 });
@@ -40,7 +43,7 @@ infoSign.addEventListener('click', () => {
 closeInfoPopup.addEventListener('click', () => {
     infoPopup.style.display = 'none';
 });
-//
+
 // Function to place Waldo in a random location
 function placeWaldo() {
     const waldo = document.getElementById('waldo');
@@ -69,12 +72,22 @@ function updateStopwatch() {
     const seconds = Math.floor(elapsedMilliseconds / 1000);
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
-    // const milliseconds = elapsedMilliseconds % 1000;
 
     stopwatch.textContent = `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
 }
 
-const startButton = document.getElementById('start-button');
+// Function to toggle between start and stop buttons
+function toggleGameControls(isGameRunning) {
+    if (isGameRunning) {
+        startButton.style.display = 'none';
+        stopButton.style.display = 'flex';
+    } else {
+        startButton.style.display = 'flex';
+        stopButton.style.display = 'none';
+    }
+}
+
+// Start button event handler
 startButton.addEventListener('click', () => {
     if (!gameStarted) {
         gameStarted = true;
@@ -84,12 +97,15 @@ startButton.addEventListener('click', () => {
         // Show Waldo when the game starts
         const waldo = document.getElementById('waldo');
         waldo.style.display = 'block';
+        
         // Make sure that the stopwatch and counter are visible
-       const counter = document.getElementById('counter');
-       counter.style.display = 'block';
-       const stopwatch = document.getElementById('stopwatch');
-       stopwatch.style.display = 'block';
-       // Hide the final results if there are any
+        const counter = document.getElementById('counter');
+        counter.style.display = 'flex';
+        const stopwatch = document.getElementById('stopwatch');
+        stopwatch.style.display = 'flex';
+        
+        // Toggle button display
+        toggleGameControls(true);
     }
     else {
         // Reset the stopwatch and score on subsequent clicks
@@ -97,6 +113,7 @@ startButton.addEventListener('click', () => {
         startTime = new Date().getTime();
         updateStopwatch();
     }
+    
     if (gameOver) {
         gameOver = false;
         // Remove the game over message if it exists
@@ -104,7 +121,8 @@ startButton.addEventListener('click', () => {
         if (gameOverMessage) {
             gameOverMessage.remove();
         }
-   }
+    }
+    
     score = 0;
     totalTime = 0;
     clickTimes = 0;
@@ -119,27 +137,28 @@ waldo.addEventListener('click', () => {
         score++;
         updateScore();
         
-        // const currentTime = new Date().getTime();
         if (startTime > 0) {
-            // const elapsedTime = currentTime - startTime;
             clickTimes++;
         }
         
-        // startTime = currentTime;
         updateStopwatch();
         placeWaldo();
     }
 });
 
-const stopButton = document.getElementById('stop-button');
+// Stop button event handler
 stopButton.addEventListener('click', () => {
-    if (gameStarted & !gameOver) {
+    if (gameStarted && !gameOver) {
         gameStarted = false;
         gameOver = true;
+        clearInterval(stopwatchInterval);
 
-        // Hide Waldo, the counter, and the stopwatch
+        // Hide Waldo, update button display
         const waldo = document.getElementById('waldo');
         waldo.style.display = 'none';
+        toggleGameControls(false);
+        
+        // Hide stats during game over screen
         const counter = document.getElementById('counter');
         counter.style.display = 'none';
         const stopwatch = document.getElementById('stopwatch');
@@ -148,10 +167,10 @@ stopButton.addEventListener('click', () => {
         // Calculate total elapsed time
         totalTime += new Date().getTime() - startTime;
 
-        // Calculate score/time (average time between clicks)
+        // Calculate average time between clicks
         const averageTime = clickTimes > 0 ? totalTime / clickTimes / 1000 : 0;
 
-        // Display the final score, total time, and score/time
+        // Display the final results
         const gameContainer = document.querySelector('.game-container');
         const gameOverMessage = document.createElement('div');
         gameOverMessage.className = 'game-over-message';

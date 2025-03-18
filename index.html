@@ -4,15 +4,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css?family=Nunito:400,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <title>Where is Waldo?</title>
 </head>
 
 <body>
     <div class="game-container">
-        <h1 id="title">Where's Waldo?</h1>
-        <h2 id="subtitle">RP Edition <span id="info-sign">ⓘ</span></h2>
+        <div class="header">
+            <h1 id="title">Where's Waldo?</h1>
+            <h2 id="subtitle">RP Edition <span id="info-sign">i</span></h2>
+        </div>
+        
         <div id="info-popup" class="info-popup">
             <div class="info-content">
                 <span id="close-info-popup" class="close-info-popup">&times;</span>
@@ -24,17 +26,22 @@
                     of vision, will find it much harder to find Waldo, hence the name of the game.</p>
             </div>
         </div>
-        <button id="start-button">Start</button>
-        <button id="stop-button">Stop</button>
-        <div id="counter">Score: 0</div>
-        <div id="stopwatch">0:00</div>
+        
+        <button id="start-button" class="btn">Start Game</button>
+        <button id="stop-button" class="btn">End Game</button>
+        
+        <div id="counter" class="stats-card">Score: 0</div>
+        <div id="stopwatch" class="stats-card">0:00</div>
+        
         <div id="badge">
             <a href="https://visitorbadge.io/status?path=https%3A%2F%2Fmenisadi.github.io%2FRPWaldo%2F">
                 <img
-                    src="https://api.visitorbadge.io/api/visitors?path=https%3A%2F%2Fmenisadi.github.io%2FRPWaldo%2F&label=Players&countColor=%23ff8a65" />
+                    src="https://api.visitorbadge.io/api/visitors?path=https%3A%2F%2Fmenisadi.github.io%2FRPWaldo%2F&label=Players&countColor=%235271ff" />
             </a>
         </div>
+        
         <div id="waldo"></div>
+        
         <svg id="svg" class="svg" viewBox="0 0 3920 3080">
             <mask id="myMask">
                 <!-- Everything under a white pixel will be visible -->
@@ -46,9 +53,10 @@
 
             <rect x="0" y="0" width="100%" height="100%" fill="white" mask="url(#myMask)" />
         </svg>
+        
         <div class="toggle-container">
             <div class="toggle-label">
-                <label for="toggle-switch">Toggle Tunnel Vision</label>
+                <label for="toggle-switch">Tunnel Vision</label>
             </div>
             <div class="toggle-sub-label">
                 <label for="toggle-switch">(Desktop Only)</label>
