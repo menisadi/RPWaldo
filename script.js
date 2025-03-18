@@ -85,12 +85,14 @@ startButton.addEventListener('click', () => {
         const waldo = document.getElementById('waldo');
         waldo.style.display = 'block';
         // Make sure that the stopwatch and counter are visible
-       const counter = document.getElementById('counter');
-       counter.style.display = 'block';
-       const stopwatch = document.getElementById('stopwatch');
-       stopwatch.style.display = 'block';
-       // Hide the final results if there are any
-    }
+        const counter = document.getElementById('counter');
+        counter.style.display = 'block';
+        const stopwatch = document.getElementById('stopwatch');
+        stopwatch.style.display = 'block';
+        
+        // Toggle buttons
+        startButton.style.display = 'none';
+        document.getElementById('stop-button').style.display = 'block';
     else {
         // Reset the stopwatch and score on subsequent clicks
         clearInterval(stopwatchInterval);
