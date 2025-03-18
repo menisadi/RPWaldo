@@ -93,7 +93,7 @@ startButton.addEventListener('click', () => {
         // Toggle buttons
         startButton.style.display = 'none';
         document.getElementById('stop-button').style.display = 'block';
-    else {
+    } else {
         // Reset the stopwatch and score on subsequent clicks
         clearInterval(stopwatchInterval);
         startTime = new Date().getTime();

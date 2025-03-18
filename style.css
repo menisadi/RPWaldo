@@ -159,7 +159,7 @@ body {
   z-index: 2;
 }
 
-* Toggle Switch Styles */
+/* Toggle Switch Styles */
 .toggle-container {
   display: flex;
   align-items: center;
