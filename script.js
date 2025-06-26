@@ -1,12 +1,14 @@
-
 // JavaScript variables
 let score = 0;
 let gameStarted = false;
 let gameOver = false;
-let startTime = 0;
-let totalTime = 0;
+let startTime = 0; // For overall game stopwatch
+let currentWaldoAppearanceTime = 0; // For time taken to find current Waldo
+let totalTime = 0; // For overall game duration calculation
 let stopwatchInterval;
-let clickTimes = 0;
+let clickTimes = 0; // For overall average time per click
+let waldoClickRecords = []; // New: To store {x, y, timeTaken} for each click
+
 const infoSign = document.getElementById('info-sign');
 const infoPopup = document.getElementById('info-popup');
 const closeInfoPopup = document.getElementById('close-info-popup');
@@ -15,6 +17,8 @@ const svg = document.getElementById('svg');
 const toggleSwitch = document.getElementById('toggle-switch');
 const startButton = document.getElementById('start-button');
 const stopButton = document.getElementById('stop-button');
+const waldo = document.getElementById('waldo'); // Get Waldo element once
+const gameContainer = document.querySelector('.game-container'); // Get game container once
 
 // Toggle tunnel vision effect
 toggleSwitch.addEventListener('change', function() {
@@ -46,10 +50,8 @@ closeInfoPopup.addEventListener('click', () => {
 
 // Function to place Waldo in a random location
 function placeWaldo() {
-    const waldo = document.getElementById('waldo');
-    const container = document.querySelector('.game-container');
-    const maxX = container.offsetWidth - waldo.offsetWidth;
-    const maxY = container.offsetHeight - waldo.offsetHeight;
+    const maxX = gameContainer.offsetWidth - waldo.offsetWidth;
+    const maxY = gameContainer.offsetHeight - waldo.offsetHeight;
 
     const randomX = Math.floor(Math.random() * maxX);
     const randomY = Math.floor(Math.random() * maxY);
@@ -91,11 +93,12 @@ function toggleGameControls(isGameRunning) {
 startButton.addEventListener('click', () => {
     if (!gameStarted) {
         gameStarted = true;
-        startTime = new Date().getTime();
+        gameOver = false; // Ensure game is not in game over state
+        startTime = new Date().getTime(); // For overall stopwatch
+        currentWaldoAppearanceTime = new Date().getTime(); // For first Waldo find time
         stopwatchInterval = setInterval(updateStopwatch, 1000);
 
         // Show Waldo when the game starts
-        const waldo = document.getElementById('waldo');
         waldo.style.display = 'block';
         
         // Make sure that the stopwatch and counter are visible
@@ -108,9 +111,10 @@ startButton.addEventListener('click', () => {
         toggleGameControls(true);
     }
     else {
-        // Reset the stopwatch and score on subsequent clicks
+        // Reset the stopwatch and score on subsequent clicks (restarts)
         clearInterval(stopwatchInterval);
-        startTime = new Date().getTime();
+        startTime = new Date().getTime(); // Reset overall stopwatch
+        currentWaldoAppearanceTime = new Date().getTime(); // Reset for first Waldo of new game
         updateStopwatch();
     }
     
@@ -126,23 +130,28 @@ startButton.addEventListener('click', () => {
     score = 0;
     totalTime = 0;
     clickTimes = 0;
+    waldoClickRecords = []; // New: Clear records for a new game
     updateScore();
     placeWaldo();
 });
 
 // Event listener for clicking on Waldo
-const waldo = document.getElementById('waldo');
 waldo.addEventListener('click', () => {
     if (gameStarted) {
         score++;
         updateScore();
         
-        if (startTime > 0) {
-            clickTimes++;
-        }
+        // New: Record Waldo's position and time taken
+        const timeTaken = new Date().getTime() - currentWaldoAppearanceTime;
+        const waldoX = parseInt(waldo.style.left);
+        const waldoY = parseInt(waldo.style.top);
+        waldoClickRecords.push({ x: waldoX, y: waldoY, time: timeTaken });
         
-        updateStopwatch();
-        placeWaldo();
+        clickTimes++; // For overall average calculation
+        
+        updateStopwatch(); // Update overall stopwatch
+        placeWaldo(); // Move Waldo to a new location
+        currentWaldoAppearanceTime = new Date().getTime(); // Reset timer for next Waldo find
     }
 });
 
@@ -154,7 +163,6 @@ stopButton.addEventListener('click', () => {
         clearInterval(stopwatchInterval);
 
         // Hide Waldo, update button display
-        const waldo = document.getElementById('waldo');
         waldo.style.display = 'none';
         toggleGameControls(false);
         
@@ -171,7 +179,6 @@ stopButton.addEventListener('click', () => {
         const averageTime = clickTimes > 0 ? totalTime / clickTimes / 1000 : 0;
 
         // Display the final results
-        const gameContainer = document.querySelector('.game-container');
         const gameOverMessage = document.createElement('div');
         gameOverMessage.className = 'game-over-message';
         gameOverMessage.innerHTML = `
@@ -179,8 +186,68 @@ stopButton.addEventListener('click', () => {
             <p>Final Score: ${score}</p>
             <p>Total Time: ${(totalTime / 1000).toFixed(2)} seconds</p>
             <p>${averageTime.toFixed(2)} seconds per click</p>
+            <button id="exportHeatmapButton" class="btn">Export Field of Vision</button>
         `;
         gameContainer.appendChild(gameOverMessage);
+
+        // New: Add event listener to the dynamically created export button
+        const exportHeatmapButton = document.getElementById('exportHeatmapButton');
+        if (exportHeatmapButton) {
+            exportHeatmapButton.addEventListener('click', generateAndExportHeatmap);
+        }
     }
 });
 
+// New function to generate and export heatmap data
+function generateAndExportHeatmap() {
+    if (waldoClickRecords.length === 0) {
+        alert("No Waldo finds recorded to generate a heatmap for this game session.");
+        return;
+    }
+
+    const containerWidth = gameContainer.offsetWidth;
+    const containerHeight = gameContainer.offsetHeight;
+
+    // Initialize heatmap and counts matrices with zeros
+    // Using Array.from for deep copy of inner arrays to avoid shared references
+    const heatmapSum = Array.from({ length: containerHeight }, () => Array(containerWidth).fill(0));
+    const heatmapCounts = Array.from({ length: containerHeight }, () => Array(containerWidth).fill(0));
+
+    // Aggregate data
+    waldoClickRecords.forEach(record => {
+        const { x, y, time } = record;
+        // Ensure coordinates are within bounds of the container
+        // Note: Waldo's position (x,y) is its top-left corner.
+        // For a heatmap, we might consider a small area around it,
+        // but for simplicity, we'll just use the top-left pixel.
+        if (y >= 0 && y < containerHeight && x >= 0 && x < containerWidth) {
+            heatmapSum[y][x] += time;
+            heatmapCounts[y][x] += 1;
+        }
+    });
+
+    // Calculate average time for each recorded pixel
+    const finalHeatmap = Array.from({ length: containerHeight }, () => Array(containerWidth).fill(0));
+    for (let r = 0; r < containerHeight; r++) {
+        for (let c = 0; c < containerWidth; c++) {
+            if (heatmapCounts[r][c] > 0) {
+                finalHeatmap[r][c] = heatmapSum[r][c] / heatmapCounts[r][c]; // Average time in milliseconds
+            }
+        }
+    }
+
+    // Convert heatmap to JSON string for export
+    const heatmapJson = JSON.stringify(finalHeatmap, null, 2); // Pretty print JSON for readability
+
+    // Create a Blob and trigger download
+    const blob = new Blob([heatmapJson], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'waldo_field_of_vision_heatmap.json'; // Suggested filename
+    document.body.appendChild(a); // Append to body to make it clickable
+    a.click(); // Programmatically click the link to trigger download
+    document.body.removeChild(a); // Clean up the element
+    URL.revokeObjectURL(url); // Release the object URL
+}
