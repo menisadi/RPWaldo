@@ -57,10 +57,10 @@ def create_heatmap_plot(json_file_path, output_png_path, sigma=15):
     base_height = base_width * (height / width) if width > 0 else base_width * (3/4) # Default to 4:3 if width is 0
     plt.figure(figsize=(base_width, base_height))
     
-    # Use 'plasma' colormap: dark for low values (fast times), bright/yellow for high values (slow times).
+    # Use 'plasma_r' colormap: bright for low values (fast times), dark for high values (slow times).
     # 'origin='upper'' ensures that the (0,0) coordinate is at the top-left, matching image conventions.
     # 'interpolation='bilinear'' provides a smooth visual representation of the smoothed data.
-    plt.imshow(smoothed_heatmap, cmap='plasma', origin='upper', vmin=0, vmax=max_val, interpolation='bilinear')
+    plt.imshow(smoothed_heatmap, cmap='plasma_r', origin='upper', vmin=0, vmax=max_val, interpolation='bilinear')
     
     plt.colorbar(label='Average Time to Find Waldo (ms)')
     plt.title(f'Waldo Field of Vision Heatmap (Smoothed with $\sigma={sigma}$)')
