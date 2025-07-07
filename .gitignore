@@ -4,3 +4,6 @@ explain.md
 .aider.input.history
 .hushlogin
 .aider*
+CLAUDE.md
+*.json
+waldo_heatmap.png
